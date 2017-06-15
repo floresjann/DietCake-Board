@@ -1,13 +1,14 @@
 <?php
-    class AppException extends Exception
-    {
-    }
 
-    class ValidationException extends AppException
-    {
-    }
+class AppException extends Exception
+{
+}
 
-    class NotFoundException extends Exception
-    {
-    }
+class ValidationException extends AppException
+{
+}
+
+class NotFoundException extends Exception
+{
+}
 

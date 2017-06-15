@@ -33,18 +33,6 @@ class Thread extends AppModel
         return Comment::getByThreadId($this->id);
     }
 
-    public function write(Comment $comment)
-    {
-        $db = DB::conn();
-        $params = array(
-            'thread_id' => $this->id,
-            'username' => $comment->username,
-            'body' => $comment->body,
-            'created' => date('Y-m-d H:i:s')
-        );
-        $db->insert('comment', $params);
-    }
-
     public function create(Comment $comment)
     {
         $this->validate();
@@ -56,6 +44,7 @@ class Thread extends AppModel
         $db->begin();
         $db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
         $this->id = $db->lastInsertId();
+        // write first comment at the same time
         $this->write($comment);
         $db->commit();
     }

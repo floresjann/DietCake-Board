@@ -45,7 +45,8 @@ class Thread extends AppModel
         $db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
         $this->id = $db->lastInsertId();
         // write first comment at the same time
-        $this->write($comment);
+        $comment->thread_id = $this->id;
+        $comment->write();
         $db->commit();
     }
 

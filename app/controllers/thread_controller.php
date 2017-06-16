@@ -18,8 +18,6 @@ class ThreadController extends AppController
     public function write()
     {
         $thread = Thread::get(Param::get('thread_id'));
-        $comment = new Comment;
-        $page = Param::get('page_next', 'write');
         $page = Param::get('page_next', 'write');
         if ($page == 'write_end') {
             $params = array(

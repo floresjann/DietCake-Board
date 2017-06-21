@@ -1,15 +1,20 @@
 <?php
-
 class ThreadController extends AppController
 {
-    public function index()
+    public function viewthread()
     {
+        if (!isset($_SESSION['username'])) {
+            redirect(url('user/login'));
+        }
         $threads = Thread::getAll();
         $this->set(get_defined_vars());
     }
 
     public function view()
     {
+        if (!isset($_SESSION['username'])) {
+            redirect(url('user/login'));
+        }
         $thread = Thread::get(Param::get('thread_id'));
         $comments = $thread->getComments();
         $this->set(get_defined_vars());
@@ -17,12 +22,16 @@ class ThreadController extends AppController
 
     public function write()
     {
+        if (!isset($_SESSION['username'])) {
+            redirect(url('user/login'));
+        }
         $thread = Thread::get(Param::get('thread_id'));
         $page = Param::get('page_next', 'write');
+
         if ($page == 'write_end') {
             $params = array(
                 'thread_id' => Param::get('thread_id'),
-                'username' => Param::get('username'),
+                'username' => get_session_username(),
                 'body' => Param::get('body'),
             );
             $comment = new Comment($params);
@@ -39,6 +48,9 @@ class ThreadController extends AppController
 
     public function create()
     {
+        if (!isset($_SESSION['username'])) {
+            redirect(url('user/login'));
+        }
         $thread = new Thread;
         $comment = new Comment;
         $page = Param::get('page_next', 'create');
@@ -47,7 +59,7 @@ class ThreadController extends AppController
                 break;
             case 'create_end':
                 $thread->title = Param::get('title');
-                $comment->username = Param::get('username');
+                $comment->username = get_session_username();
                 $comment->body = Param::get('body');
                 try {
                     $thread->create($comment);

@@ -1,8 +1,6 @@
 <?php
-
 class Comment extends AppModel
 {
-
     public $validation = array(
         'username' => array(
             'length' => array(

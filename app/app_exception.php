@@ -1,5 +1,4 @@
 <?php
-
 class AppException extends Exception
 {
 }
@@ -8,7 +7,14 @@ class ValidationException extends AppException
 {
 }
 
-class NotFoundException extends Exception
+class RecordNotFoundException extends AppException
 {
 }
 
+class PageNotFoundException extends AppException
+{
+}
+
+class DuplicateValueException extends AppException
+{
+}

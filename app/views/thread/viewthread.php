@@ -9,3 +9,6 @@
     <?php endforeach ?>
 </ul>
 <a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Create</a>
+<br />
+Signed in as <?php echo get_session_username(), " " ?>
+<a href="<?php eh(url('user/logout')) ?>">Logout</a>

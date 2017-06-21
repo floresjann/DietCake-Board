@@ -1,5 +1,4 @@
 <?php
-
 class Thread extends AppModel
 {
     public $validation = array(
@@ -49,5 +48,4 @@ class Thread extends AppModel
         $comment->write();
         $db->commit();
     }
-
 }

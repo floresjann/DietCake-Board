@@ -1,7 +1,6 @@
 <?php
 class User extends AppModel
 {
-    const ERR_DUPLICATE_ENTRY = 1062;
     public $user_validated = true;
     public $validation = array(
         'username' => array(
@@ -16,40 +15,17 @@ class User extends AppModel
         ),
     );
 
-    public function login(User $user)
+    public function login()
     {
-        if (!$this->isUserExisting() || !$this->isPasswordMatch()) {
-            $this->user_validated = false;
-        }
-        $username = $this->username;
-        $password = $this->password;
-
         $db = DB::conn();
-        $user = $db->row('SELECT username, password FROM user WHERE username = ? and password = ?', array($username, md5($password)));
+        $user = $db->row('SELECT username, password FROM user WHERE username = ? and password = ?', array($this->username, md5($this->password)));
 
         if (!$user) {
-            throw new RecordNotFoundException();
             $this->user_validated = false;
+            throw new RecordNotFoundException();
         }
 
         return new self($user);
-    }
-
-    public function isUserExisting()
-    {
-        $db = DB::conn();
-        $row = $db->row('SELECT 1 FROM user WHERE username = ?', array($this->username));
-        return $row ? true : false;
-    }
-
-    public function isPasswordMatch()
-    {
-        $username = $this->username;
-        $password = $this->password;
-
-        $db = DB::conn();
-        $row = $db->row('SELECT password FROM user WHERE username = ? and password = ?', array($username, md5($password)));
-        return $row ? true : false;
     }
 
     public function registerUser(User $user)
@@ -63,5 +39,12 @@ class User extends AppModel
             'password' => md5($this->password)
         );
         $db->insert('user', $params);
+    }
+
+    public function isUserExisting()
+    {
+        $db = DB::conn();
+        $row = $db->row('SELECT 1 FROM user WHERE username = ?', array($this->username));
+        return $row ? true : false;
     }
 }

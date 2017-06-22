@@ -9,7 +9,6 @@ class UserController extends AppController
         switch ($page) {
             case 'registeruser':
                 break;
-
             case 'registeruser_end':
                 $user->username = Param::get('username');
                 $user->password = Param::get('password');
@@ -37,21 +36,17 @@ class UserController extends AppController
 
         switch ($page) {
             case 'login':
-
                 break;
-
             case 'login_end':
                 $user->username = Param::get('username');
-                $password = $user->password = Param::get('password');
-                $user->password = $password;
+                $user->password = Param::get('password');
                 try {
-                    $user = $user->login($user);
+                    $user = $user->login();
                     $_SESSION['username'] = $user->username;
                 } catch (RecordNotFoundException $e) {
                     $page = 'login';
                 }
                 break;
-
             default:
                 throw new RecordNotFoundException("{$page} is not found");
                 break;
